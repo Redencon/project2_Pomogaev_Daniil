@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-from .engine import execute_command, get_command
+from .engine import HELP_TEXT, run
 
 
 def main():
     print(" Первая попытка запустить проект!")
-    s = True
-    execute_command('help')
-    while s:
-        c = get_command()
-        s = execute_command(c)
+    print(HELP_TEXT)
+    run()
 
 
 
