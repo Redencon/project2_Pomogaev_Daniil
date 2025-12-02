@@ -39,7 +39,7 @@ def run():
                     table_name = args[0]
                     drop_table(metadata, table_name)
                 case "list_tables":
-                    print(metadata.keys())
+                    print(*metadata.keys())
                 case _:
                     print(
                         "Unknown command. "

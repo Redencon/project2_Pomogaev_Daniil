@@ -5,6 +5,8 @@
 def create_table(metadata, table_name, columns):
     if table_name in metadata:
         raise ValueError(f"Table {table_name} already exists")
+    if len(columns) == 0:
+        raise ValueError("No columns specified")
     if columns[0][0] != "ID":
         columns = [("ID", "int")] + columns
     for column in columns:
