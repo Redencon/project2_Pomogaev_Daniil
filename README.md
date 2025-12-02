@@ -33,6 +33,8 @@ make project
 
 ## Пример использования
 
+https://asciinema.org/a/lCtKOLeIhUwhMzQPKobr84kEF
+
 ```
 create_table users name:str age:int email:str
 list_tables
