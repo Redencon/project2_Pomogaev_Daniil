@@ -8,6 +8,10 @@ from .core import create_table, delete, drop_table, info, insert, select, update
 from .utils import DEFAULT_META_FILE, load_metadata, save_metadata
 
 HELP_TEXT = """
+<command> create_table <имя_таблицы> (<столбец1>:<тип1>, <столбец2>:<тип2>, ...) \
+- создать таблицу.
+<command> drop_table <имя_таблицы> - удалить таблицу.
+<command> list_tables - вывести список таблиц.
 <command> insert into <имя_таблицы> values (<значение1>, <значение2>, ...) \
 - создать запись.
 <command> select from <имя_таблицы> where <столбец> = <значение> \
