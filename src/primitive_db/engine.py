@@ -31,6 +31,7 @@ def print_rows(rows: list[dict[str, Any]]):
     
 
 def run():
+    # cacher = create_cacher()
     while True:
         metadata = load_metadata(DEFAULT_META_FILE)
         user_inp = get_command()
@@ -70,10 +71,12 @@ def run():
                     table_name = args[1]
                     if "where" not in args:
                         rows = select(metadata, table_name)
+                        # rows = select(metadata, table_name)
                         print_rows(rows)
                     else:
                         clause = " ".join(args[3:6])
                         rows = select(metadata, table_name, clause)
+                        # rows = select(metadata, table_name, clause)
                         print_rows(rows)
                 case "update":
                     table_name = args[0]

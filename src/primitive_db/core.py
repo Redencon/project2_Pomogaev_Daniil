@@ -2,6 +2,8 @@
 # from .utils import load_metadata, save_metadata
 import ast
 
+from .decorators import confirm_action, handle_db_errors, log_time
+
 value_type_mapping: dict[str, type] = {
     "int": int,
     "str": str,
@@ -9,6 +11,7 @@ value_type_mapping: dict[str, type] = {
 }
 
 
+@handle_db_errors
 def create_table(metadata, table_name, columns):
     if table_name in metadata:
         raise ValueError(f"Table {table_name} already exists")
@@ -22,12 +25,16 @@ def create_table(metadata, table_name, columns):
     metadata[table_name] = {'columns': columns, 'values': []}
     return metadata
 
+@handle_db_errors
+@confirm_action("удаление таблицы")
 def drop_table(metadata, table_name):
     if table_name not in metadata:
         raise ValueError(f"Table {table_name} does not exist")
     del metadata[table_name]
     return metadata
 
+@handle_db_errors
+@log_time
 def insert(metadata, table_name, values):
     if table_name not in metadata:
         raise ValueError(f"Table {table_name} does not exist")
@@ -59,6 +66,8 @@ def get_col_type(metadata, table_name, col_name):
         raise ValueError(f"Column {col_name} does not exist")
     return value_type_mapping[col_pair[0][1]]
 
+@handle_db_errors
+@log_time
 def select(metadata, table_name, where=None):
     if table_name not in metadata:
         raise ValueError(f"Table {table_name} does not exist")
@@ -70,6 +79,7 @@ def select(metadata, table_name, where=None):
         row for row in values if where is None or row[col_to_check] == val_to_check
     ]
 
+@handle_db_errors
 def update(metadata, table_name, set_value, where=None):
     if table_name not in metadata:
         raise ValueError(f"Table {table_name} does not exist")
@@ -86,6 +96,8 @@ def update(metadata, table_name, set_value, where=None):
     return metadata
 
 
+@handle_db_errors
+@confirm_action("удаление строк")
 def delete(metadata, table_name, where):
     a, b = clause_parser(where)
     b = get_col_type(metadata, table_name, a)(b)
@@ -97,6 +109,7 @@ def delete(metadata, table_name, where):
     return metadata
 
 
+@handle_db_errors
 def info(metadata, table_name):
     if table_name not in metadata:
         raise ValueError(f"Table {table_name} does not exist")
