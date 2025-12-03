@@ -4,7 +4,7 @@ import ast
 
 from .decorators import confirm_action, handle_db_errors, log_time
 
-value_type_mapping: dict[str, type] = {
+VALUE_TYPE_MAPPING: dict[str, type] = {
     "int": int,
     "str": str,
     "bool": bool,
@@ -48,7 +48,7 @@ def insert(metadata, table_name, values):
     for value, col in zip(values, metadata[table_name]['columns'][1:]):
         # if type(value) is not value_type_mapping[col[1]]:
         #     raise ValueError(f"Invalid value type {type(value)}")
-        dict_to_add[col[0]] = value_type_mapping[col[1]](value)
+        dict_to_add[col[0]] = VALUE_TYPE_MAPPING[col[1]](value)
     print(f"Добавлена строка: {dict_to_add}")
     metadata[table_name]['values'].append(dict_to_add)
     return metadata
@@ -64,7 +64,7 @@ def get_col_type(metadata, table_name, col_name):
     col_pair = [col for col in metadata[table_name]['columns'] if col[0] == col_name]
     if not col_pair:
         raise ValueError(f"Column {col_name} does not exist")
-    return value_type_mapping[col_pair[0][1]]
+    return VALUE_TYPE_MAPPING[col_pair[0][1]]
 
 @handle_db_errors
 @log_time
